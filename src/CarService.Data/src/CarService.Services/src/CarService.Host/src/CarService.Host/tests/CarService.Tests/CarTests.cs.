@@ -1,0 +1,18 @@
+using Moq;
+using Xunit;
+using CarService.Services;
+using CarService.Data;
+
+public class CarTests {
+    [Fact]
+    public async Task AddCar_Positive_Test() {
+        var repoMock = new Mock<ICarRepository>();
+        var notifyMock = new Mock<INotificationService>();
+        var service = new CarBusinessService(repoMock.Object, notifyMock.Object);
+        var car = new Car { Model = "Tesla", Year = 2024 };
+
+        await service.RegisterCarAsync(car);
+
+        repoMock.Verify(r => r.AddAsync(car), Times.Once);
+    }
+}
